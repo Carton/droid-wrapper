@@ -32,14 +32,14 @@ if (ENV["DROID_WRAPPER_DEBUG"])
     debug = true
 end
 
-droid_root = ENV["DROID_ROOT"]
+droid_root = ENV["ANDROID_BUILD_TOP"]
 if (!droid_root)
-    STDERR.puts "You must specify DROID_ROOT"
+    STDERR.puts "You must specify ANDROID_BUILD_TOP"
     exit 1
 end
-droid_target = ENV["DROID_TARGET"]
+droid_target = ENV["TARGET_PRODUCT"]
 if (!droid_target)
-    STDERR.puts "You must specify DROID_TARGET"
+    STDERR.puts "You must specify TARGET_PRODUCT"
     exit 1
 end
 
