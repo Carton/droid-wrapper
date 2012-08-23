@@ -34,24 +34,26 @@ end
 
 droid_root = ENV["ANDROID_BUILD_TOP"]
 if (!droid_root)
-    STDERR.puts "You must specify ANDROID_BUILD_TOP"
-    exit 1
-end
-droid_target = ENV["TARGET_PRODUCT"]
-if (!droid_target)
-    STDERR.puts "You must specify TARGET_PRODUCT"
+    STDERR.puts "Can't find ANDROID_BUILD_TOP in env"
     exit 1
 end
 
-droid_host = ENV["DROID_HOST"]
-if (!droid_host)
-    droid_host = "linux-x86"
+droid_out = ENV["ANDROID_PRODUCT_OUT"]
+if (!droid_out)
+    STDERR.puts "Can't find ANDROID_PRODUCT_OUT in env"
+    exit 1
 end
 
-toolver = "4.2.1"
+droid_toolchain = ENV["ANDROID_EABI_TOOLCHAIN"]
+if (!droid_toolchain)
+    STDERR.puts "Can't find ANDROID_EABI_TOOLCHAIN in env"
+    exit 1
+end
 
-toolchain = "#{droid_root}/prebuilt/#{droid_host}/toolchain/arm-eabi-#{toolver}"
-alib = "#{droid_root}/out/target/product/#{droid_target}/obj/lib"
+toolchain = "#{droid_toolchain}/.."
+alib = "#{droid_out}/obj/lib"
+
+toolver = "4.4.3"
 
 # many compiler/linker flags were extracted from
 # build/core/combo/linux-arm.mk file.
@@ -78,7 +80,7 @@ cflags =
      "-I#{droid_root}/frameworks/base/include",
      "-I#{droid_root}/frameworks/base/opengl/include",
      "-I#{droid_root}/external/skia/include",
-     "-I#{droid_root}/out/target/product/#{droid_target}/obj/include",
+     "-I#{droid_out}/obj/include",
      "-I#{droid_root}/bionic/libc/arch-arm/include",
      "-I#{droid_root}/bionic/libc/include",
      "-I#{droid_root}/bionic/libstdc++/include",
@@ -89,7 +91,7 @@ cflags =
      "-I#{droid_root}/bionic/libthread_db/include",
      "-I#{droid_root}/bionic/libm/arm",
      "-I#{droid_root}/bionic/libm",
-     "-I#{droid_root}/out/target/product/#{droid_target}/obj/SHARED_LIBRARIES/libm_intermediates"
+     "-I#{droid_out}/obj/SHARED_LIBRARIES/libm_intermediates"
     ]
 
 link_args =
@@ -105,7 +107,7 @@ link_args =
      "-L#{alib}",
      "-nostdlib",
      "#{alib}/crtbegin_dynamic.o",
-     "#{toolchain}/lib/gcc/arm-eabi/#{toolver}/libgcc.a",
+     "#{toolchain}/lib/gcc/arm-linux-androideabi/#{toolver}/libgcc.a",
      "#{alib}/crtend_android.o",
      "-lc",
      "-lm"
@@ -122,7 +124,7 @@ shlib_args =
      "-lc",
      "-lm",
      "-Wl,--no-undefined",
-     "#{toolchain}/lib/gcc/arm-eabi/#{toolver}/interwork/libgcc.a",
+     "#{toolchain}/lib/gcc/arm-linux-androideabi/#{toolver}/interwork/libgcc.a",
      "-Wl,--whole-archive",
      "-Wl,--warn-unresolved-symbols"
     ]
@@ -132,7 +134,7 @@ prog = nil
 oprog = nil
 if ($0 =~ /^.*-([^-]+)$/) 
     oprog = $1
-    prog = "#{toolchain}/bin/arm-eabi-#{$1}"
+    prog = "#{toolchain}/bin/arm-linux-androideabi-#{$1}"
 else
     STDERR.puts "internal error: invalid command name."
     exit 1
