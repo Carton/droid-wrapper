@@ -16,6 +16,7 @@ install:
 			/bin/ln -s $${droidver}-gcc "${DESTDIR}/bin/$${droidver}-$$cmd"; \
 		done \
 	done
+	/bin/rm "${DESTDIR}/bin/droid-gcc"
 	/bin/ln -s ${DEFAULT_DROID_VER}-gcc "${DESTDIR}/bin/droid-gcc"
 	for cmd in ar as c++ g++ ld nm objcopy objdump ranlib strip; do \
 		if [ -f "${DESTDIR}/bin/droid-$$cmd" ]; then \
