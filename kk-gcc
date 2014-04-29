@@ -57,11 +57,14 @@ toolver = "4.7"
 
 # many compiler/linker flags were extracted from
 # build/core/combo/linux-arm.mk file.
+# See also the build/core/combo/arch/arm/armv7-a-neon.mk file.
 
 cflags =
     [
      "-DANDROID",
-     "-msoft-float",
+     "-mcpu=cortex-a7",
+     "-mfloat-abi=softfp",
+     "-mfpu=neon",
      "-fpic",
      "-ffunction-sections",
      "-funwind-tables",
@@ -87,7 +90,7 @@ cflags =
      "-I#{droid_root}/bionic/libc/kernel/common",
      "-I#{droid_root}/bionic/libc/kernel/arch-arm",
      "-I#{droid_root}/bionic/libm/include",
-     "-I#{droid_root}/bionic/libm/include/arch/arm",
+     "-I#{droid_root}/bionic/libm/include/arm",
      "-I#{droid_root}/bionic/libthread_db/include",
      "-I#{droid_root}/bionic/libm/arm",
      "-I#{droid_root}/bionic/libm",
@@ -103,6 +106,7 @@ link_args =
      "-Wl,--no-undefined",
      "-Wl,-rpath-link=#{alib}",
      "-Wl,-rpath,/system/lib",
+     "-Wl,--fix-cortex-a8",
      "-L#{alib}",
      "-nostdlib",
      "#{alib}/crtbegin_dynamic.o",
