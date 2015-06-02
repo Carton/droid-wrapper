@@ -44,7 +44,7 @@ if (!droid_out)
     exit 1
 end
 
-droid_toolchain = ENV["ANDROID_EABI_TOOLCHAIN"]
+droid_toolchain = ENV["ANDROID_TOOLCHAIN"]
 if (!droid_toolchain)
     STDERR.puts "Can't find ANDROID_EABI_TOOLCHAIN in env"
     exit 1

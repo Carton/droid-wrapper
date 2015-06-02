@@ -7,7 +7,7 @@ all:
 
 install:
 	install -d ${DESTDIR}/bin
-	for droidver in ics jb kk; do \
+	for droidver in ics jb kk lp; do \
 		install $${droidver}-gcc ${DESTDIR}/bin/$${droidver}-gcc; \
 		for cmd in ar as c++ g++ ld nm objcopy objdump ranlib strip; do \
 			if [ -f "${DESTDIR}/bin/$${droidver}-$$cmd" ]; then \
